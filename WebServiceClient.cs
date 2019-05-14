@@ -164,7 +164,7 @@ public class WebServiceClient : BaseGameService
             else if (www.isNetworkError)
                 result.error = GameServiceErrorCode.NETWORK;
             else
-                result = JsonUtility.FromJson<T>(www.downloadHandler.text);
+                result = JsonConvert.DeserializeObject<T>(www.downloadHandler.text);
 
             onDone(www, result);
         }, loginToken));
@@ -203,7 +203,7 @@ public class WebServiceClient : BaseGameService
             else if (www.isNetworkError)
                 result.error = GameServiceErrorCode.NETWORK;
             else
-                result = JsonUtility.FromJson<T>(www.downloadHandler.text);
+                result = JsonConvert.DeserializeObject<T>(www.downloadHandler.text);
 
             onDone(www, result);
         }, data, loginToken));
