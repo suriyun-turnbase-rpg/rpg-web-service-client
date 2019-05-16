@@ -607,14 +607,25 @@ public class WebServiceClient : BaseGameService
     #region IAP
     protected override void DoOpenIapPackage_iOS(string playerId, string loginToken, string iapPackageDataId, string receipt, UnityAction<ItemResult> onFinish)
     {
-        var result = new ItemResult();
-        // TODO: Implement this
+        var dict = new Dictionary<string, object>();
+        dict.Add("iapPackageDataId", iapPackageDataId);
+        dict.Add("receipt", receipt);
+        PostAsDecodedJSON<ItemResult>("/ios-buy-goods", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
     }
 
     protected override void DoOpenIapPackage_Android(string playerId, string loginToken, string iapPackageDataId, string data, string signature, UnityAction<ItemResult> onFinish)
     {
-        var result = new ItemResult();
-        // TODO: Implement this
+        var dict = new Dictionary<string, object>();
+        dict.Add("iapPackageDataId", iapPackageDataId);
+        dict.Add("data", data);
+        dict.Add("signature", signature);
+        PostAsDecodedJSON<ItemResult>("/google-play-buy-goods", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
     }
     #endregion
 }
