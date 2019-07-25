@@ -13,6 +13,7 @@ public class WebServiceClient : BaseGameService
 {
     public string serviceUrl = "http://localhost/tbrpg-php-service";
     public bool debug;
+    public bool sendLoginTokenViaGetMethod;
 
 #if UNITY_EDITOR
     [ContextMenu("Export Game Database")]
@@ -173,9 +174,17 @@ public class WebServiceClient : BaseGameService
 
     public IEnumerator GetRoutine(string path, System.Action<UnityWebRequest> onDone, string loginToken = "")
     {
+        if (sendLoginTokenViaGetMethod && !string.IsNullOrEmpty(loginToken))
+        {
+            if (path.Contains("?"))
+                path += "&logintoken=" + loginToken;
+            else
+                path += "?logintoken=" + loginToken;
+        }
+
         var www = UnityWebRequest.Get(serviceUrl + path);
 
-        if (!string.IsNullOrEmpty(loginToken))
+        if (!sendLoginTokenViaGetMethod && !string.IsNullOrEmpty(loginToken))
         {
             www.SetRequestHeader("Authorization", "Bearer " + loginToken);
             if (debug)
@@ -219,9 +228,17 @@ public class WebServiceClient : BaseGameService
 
     public IEnumerator PostRoutine(string path, System.Action<UnityWebRequest> onDone, string data = "{}", string loginToken = "")
     {
+        if (sendLoginTokenViaGetMethod && !string.IsNullOrEmpty(loginToken))
+        {
+            if (path.Contains("?"))
+                path += "&logintoken=" + loginToken;
+            else
+                path += "?logintoken=" + loginToken;
+        }
+
         var www = UnityWebRequest.Post(serviceUrl + path, data);
 
-        if (!string.IsNullOrEmpty(loginToken))
+        if (!sendLoginTokenViaGetMethod && !string.IsNullOrEmpty(loginToken))
         {
             www.SetRequestHeader("Authorization", "Bearer " + loginToken);
             if (debug)
