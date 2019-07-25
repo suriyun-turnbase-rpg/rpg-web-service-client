@@ -12,6 +12,7 @@ using UnityEditor;
 public class WebServiceClient : BaseGameService
 {
     public string serviceUrl = "http://localhost/tbrpg-php-service";
+    public bool debug;
 
 #if UNITY_EDITOR
     [ContextMenu("Export Game Database")]
@@ -175,7 +176,11 @@ public class WebServiceClient : BaseGameService
         var www = UnityWebRequest.Get(serviceUrl + path);
 
         if (!string.IsNullOrEmpty(loginToken))
+        {
             www.SetRequestHeader("Authorization", "Bearer " + loginToken);
+            if (debug)
+                Debug.Log("[GET->Authorization] " + path + " " + loginToken);
+        }
         www.SetRequestHeader("Accept", "application/json");
         www.SetRequestHeader("Content-Type", "application/json");
 
@@ -183,6 +188,9 @@ public class WebServiceClient : BaseGameService
 
         if (www.isNetworkError || www.isHttpError)
             Debug.LogError("[GET->Error]" + path + " " + www.error + " " + www.downloadHandler.text);
+
+        if (debug)
+            Debug.Log("[GET->Result] " + path + " " + www.downloadHandler.text);
 
         if (onDone != null)
             onDone.Invoke(www);
@@ -214,14 +222,23 @@ public class WebServiceClient : BaseGameService
         var www = UnityWebRequest.Post(serviceUrl + path, data);
 
         if (!string.IsNullOrEmpty(loginToken))
+        {
             www.SetRequestHeader("Authorization", "Bearer " + loginToken);
+            if (debug)
+                Debug.Log("[POST->Authorization] " + path + " " + loginToken);
+        }
         www.SetRequestHeader("Accept", "application/json");
         www.SetRequestHeader("Content-Type", "application/json");
+        if (debug)
+            Debug.Log("[POST->Data] " + path + " " + data);
 
         yield return www.SendWebRequest();
 
         if (www.isNetworkError || www.isHttpError)
             Debug.LogError("[POST->Error]" + path + " " + www.error + " " + www.downloadHandler.text);
+
+        if (debug)
+            Debug.Log("[POST->Result] " + path + " " + www.downloadHandler.text);
 
         if (onDone != null)
             onDone.Invoke(www);
