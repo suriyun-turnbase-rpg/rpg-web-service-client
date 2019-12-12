@@ -551,10 +551,11 @@ public class WebServiceClient : BaseGameService
     #endregion
 
     #region Battle Services
-    protected override void DoStartStage(string playerId, string loginToken, string stageDataId, UnityAction<StartStageResult> onFinish)
+    protected override void DoStartStage(string playerId, string loginToken, string stageDataId, string helperPlayerId, UnityAction<StartStageResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
         dict.Add("stageDataId", stageDataId);
+        dict.Add("helperPlayerId", helperPlayerId);
         PostAsDecodedJSON<StartStageResult>("/start-stage", (www, result) =>
         {
             onFinish(result);
