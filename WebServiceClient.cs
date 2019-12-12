@@ -480,6 +480,16 @@ public class WebServiceClient : BaseGameService
             onFinish(result);
         }, JsonConvert.SerializeObject(dict), loginToken);
     }
+
+    protected override void DoEarnAchievementReward(string playerId, string loginToken, string achievementId, UnityAction<EarnAchievementResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("achievementId", achievementId);
+        PostAsDecodedJSON<EarnAchievementResult>("/earn-achievement-reward", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
     #endregion
 
     #region Social Services
