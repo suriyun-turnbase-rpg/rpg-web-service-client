@@ -262,6 +262,14 @@ public class WebServiceClient : BaseGameService
     }
 
     #region Listing Services
+    protected override void DoGetAchievementList(string playerId, string loginToken, UnityAction<AchievementListResult> onFinish)
+    {
+        GetAsDecodedJSON<AchievementListResult>("/achievements", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
     protected override void DoGetAuthList(string playerId, string loginToken, UnityAction<AuthListResult> onFinish)
     {
         // TODO: This may not be used
