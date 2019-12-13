@@ -32,6 +32,7 @@ public class WebServiceClient : BaseGameService
             return;
         }
         gameDatabase.Setup();
+        var achievementsJson = "";
         var itemsJson = "";
         var currenciesJson = "";
         var staminasJson = "";
@@ -43,6 +44,14 @@ public class WebServiceClient : BaseGameService
         var startCharactersJson = "";
         var unlockStagesJson = "";
         var arenaRanksJson = "";
+
+        foreach (var achievement in gameDatabase.Achievements)
+        {
+            if (!string.IsNullOrEmpty(achievementsJson))
+                achievementsJson += ",";
+            achievementsJson += "\"" + achievement.Key + "\":" + achievement.Value.ToJson();
+        }
+        achievementsJson = "{" + achievementsJson + "}";
 
         foreach (var item in gameDatabase.Items)
         {
@@ -127,7 +136,9 @@ public class WebServiceClient : BaseGameService
         }
         arenaRanksJson = "[" + arenaRanksJson + "]";
 
-        var jsonCombined = "{\"items\":" + itemsJson + "," +
+        var jsonCombined = "{" +
+            "\"achievements\":" + achievementsJson + "," +
+            "\"items\":" + itemsJson + "," +
             "\"currencies\":" + currenciesJson + "," +
             "\"staminas\":" + staminasJson + "," +
             "\"formations\":" + formationsJson + "," +
