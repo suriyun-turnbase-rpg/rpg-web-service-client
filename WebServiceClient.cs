@@ -40,7 +40,7 @@ public class WebServiceClient : BaseGameService
         var stagesJson = "";
         var lootBoxesJson = "";
         var iapPackagesJson = "";
-        var hardCurrencyConvertionsJson = "";
+        var hardCurrencyConversionsJson = "";
         var startItemsJson = "";
         var startCharactersJson = "";
         var unlockStagesJson = "";
@@ -97,13 +97,13 @@ public class WebServiceClient : BaseGameService
         }
         iapPackagesJson = "{" + iapPackagesJson + "}";
 
-        foreach (var entry in gameDatabase.hardCurrencyConvertions)
+        foreach (var entry in gameDatabase.hardCurrencyConversions)
         {
-            if (!string.IsNullOrEmpty(hardCurrencyConvertionsJson))
-                hardCurrencyConvertionsJson += ",";
-            hardCurrencyConvertionsJson += entry.ToJson();
+            if (!string.IsNullOrEmpty(hardCurrencyConversionsJson))
+                hardCurrencyConversionsJson += ",";
+            hardCurrencyConversionsJson += entry.ToJson();
         }
-        hardCurrencyConvertionsJson = "[" + hardCurrencyConvertionsJson + "]";
+        hardCurrencyConversionsJson = "[" + hardCurrencyConversionsJson + "]";
 
         foreach (var entry in gameDatabase.startItems)
         {
@@ -154,7 +154,7 @@ public class WebServiceClient : BaseGameService
             "\"stages\":" + stagesJson + "," +
             "\"lootBoxes\":" + lootBoxesJson + "," +
             "\"iapPackages\":" + iapPackagesJson + "," +
-            "\"hardCurrencyConvertions\":" + hardCurrencyConvertionsJson + "," +
+            "\"hardCurrencyConversions\":" + hardCurrencyConversionsJson + "," +
             "\"startItems\":" + startItemsJson + "," +
             "\"startCharacters\":" + startCharactersJson + "," +
             "\"unlockStages\":" + unlockStagesJson + "," +
@@ -507,6 +507,16 @@ public class WebServiceClient : BaseGameService
         var dict = new Dictionary<string, object>();
         dict.Add("achievementId", achievementId);
         PostAsDecodedJSON<EarnAchievementResult>("/earn-achievement-reward", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+
+    protected override void DoConvertHardCurrency(string playerId, string loginToken, int requireHardCurrency, UnityAction<HardCurrencyConversionResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("requireHardCurrency", requireHardCurrency);
+        PostAsDecodedJSON<HardCurrencyConversionResult>("/convert-hard-currency", (www, result) =>
         {
             onFinish(result);
         }, JsonConvert.SerializeObject(dict), loginToken);
