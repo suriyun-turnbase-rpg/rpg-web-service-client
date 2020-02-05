@@ -40,6 +40,7 @@ public class WebServiceClient : BaseGameService
         var stagesJson = "";
         var lootBoxesJson = "";
         var iapPackagesJson = "";
+        var inGamePackagesJson = "";
         var startItemsJson = "";
         var startCharactersJson = "";
         var unlockStagesJson = "";
@@ -96,6 +97,14 @@ public class WebServiceClient : BaseGameService
         }
         iapPackagesJson = "{" + iapPackagesJson + "}";
 
+        foreach (var entry in gameDatabase.InGamePackages)
+        {
+            if (!string.IsNullOrEmpty(inGamePackagesJson))
+                inGamePackagesJson += ",";
+            inGamePackagesJson += "\"" + entry.Key + "\":" + entry.Value.ToJson();
+        }
+        inGamePackagesJson = "{" + inGamePackagesJson + "}";
+
         foreach (var entry in gameDatabase.startItems)
         {
             if (entry == null || entry.item == null)
@@ -145,6 +154,7 @@ public class WebServiceClient : BaseGameService
             "\"stages\":" + stagesJson + "," +
             "\"lootBoxes\":" + lootBoxesJson + "," +
             "\"iapPackages\":" + iapPackagesJson + "," +
+            "\"inGamePackages\":" + inGamePackagesJson + "," +
             "\"hardToSoftCurrencyConversion\":" + gameDatabase.hardToSoftCurrencyConversion + "," +
             "\"startItems\":" + startItemsJson + "," +
             "\"startCharacters\":" + startCharactersJson + "," +
@@ -482,6 +492,14 @@ public class WebServiceClient : BaseGameService
         });
     }
 
+    protected override void DoGetAvailableInGamePackageList(UnityAction<AvailableInGamePackageListResult> onFinish)
+    {
+        GetAsDecodedJSON<AvailableInGamePackageListResult>("/available-ingame-packages", (www, result) =>
+        {
+            onFinish(result);
+        });
+    }
+
     protected override void DoOpenLootBox(string playerId, string loginToken, string lootBoxDataId, int packIndex, UnityAction<ItemResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
@@ -698,6 +716,18 @@ public class WebServiceClient : BaseGameService
         dict.Add("data", data);
         dict.Add("signature", signature);
         PostAsDecodedJSON<ItemResult>("/google-play-buy-goods", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+    #endregion
+
+    #region In-Game Package
+    protected override void DoOpenInGamePackage(string playerId, string loginToken, string inGamePackageDataId, UnityAction<ItemResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("inGamePackageDataId", inGamePackageDataId);
+        PostAsDecodedJSON<ItemResult>("/open-ingame-package", (www, result) =>
         {
             onFinish(result);
         }, JsonConvert.SerializeObject(dict), loginToken);
