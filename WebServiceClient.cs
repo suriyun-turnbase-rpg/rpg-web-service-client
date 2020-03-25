@@ -557,6 +557,14 @@ public partial class WebServiceClient : BaseGameService
         }, loginToken);
     }
 
+    protected override void DoGetPendingRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    {
+        GetAsDecodedJSON<FriendListResult>("/pending-requests", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
     protected override void DoFindUser(string playerId, string loginToken, string displayName, UnityAction<FriendListResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
