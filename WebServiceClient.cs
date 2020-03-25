@@ -9,7 +9,7 @@ using System.IO;
 using UnityEditor;
 #endif
 
-public class WebServiceClient : BaseGameService
+public partial class WebServiceClient : BaseGameService
 {
     public string serviceUrl = "http://localhost/tbrpg-php-service";
     public bool debug;
