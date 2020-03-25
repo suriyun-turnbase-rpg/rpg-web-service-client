@@ -614,6 +614,16 @@ public partial class WebServiceClient : BaseGameService
             onFinish(result);
         }, JsonConvert.SerializeObject(dict), loginToken);
     }
+
+    protected override void DoFriendRequestDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("targetPlayerId", targetPlayerId);
+        PostAsDecodedJSON<GameServiceResult>("/friend-request-delete", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
     #endregion
 
     #region Battle Services
