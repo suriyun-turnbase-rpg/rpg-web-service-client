@@ -856,5 +856,29 @@ public partial class WebServiceClient : BaseGameService
             onFinish(result);
         }, loginToken);
     }
+
+    protected override void DoGetClanJoinRequestList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
+    {
+        PostAsDecodedJSON<PlayerListResult>("/clan-join-requests", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoGetClanJoinPendingRequestList(string playerId, string loginToken, UnityAction<ClanListResult> onFinish)
+    {
+        PostAsDecodedJSON<ClanListResult>("/clan-join-pending-requests", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoClanExit(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish)
+    {
+        PostAsDecodedJSON<GameServiceResult>("/clan-exit", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
     #endregion
 }
