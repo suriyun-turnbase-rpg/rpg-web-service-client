@@ -533,43 +533,43 @@ public partial class WebServiceClient : BaseGameService
     #endregion
 
     #region Social Services
-    protected override void DoGetHelperList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoGetHelperList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
-        GetAsDecodedJSON<FriendListResult>("/helpers", (www, result) =>
+        GetAsDecodedJSON<PlayerListResult>("/helpers", (www, result) =>
         {
             onFinish(result);
         }, loginToken);
     }
 
-    protected override void DoGetFriendList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoGetFriendList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
-        GetAsDecodedJSON<FriendListResult>("/friends", (www, result) =>
+        GetAsDecodedJSON<PlayerListResult>("/friends", (www, result) =>
         {
             onFinish(result);
         }, loginToken);
     }
 
-    protected override void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoGetFriendRequestList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
-        GetAsDecodedJSON<FriendListResult>("/friend-requests", (www, result) =>
+        GetAsDecodedJSON<PlayerListResult>("/friend-requests", (www, result) =>
         {
             onFinish(result);
         }, loginToken);
     }
 
-    protected override void DoGetPendingRequestList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoGetPendingRequestList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
-        GetAsDecodedJSON<FriendListResult>("/pending-requests", (www, result) =>
+        GetAsDecodedJSON<PlayerListResult>("/pending-requests", (www, result) =>
         {
             onFinish(result);
         }, loginToken);
     }
 
-    protected override void DoFindUser(string playerId, string loginToken, string displayName, UnityAction<FriendListResult> onFinish)
+    protected override void DoFindUser(string playerId, string loginToken, string displayName, UnityAction<PlayerListResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
         dict.Add("profileName", displayName);
-        PostAsDecodedJSON<FriendListResult>("/find-player", (www, result) =>
+        PostAsDecodedJSON<PlayerListResult>("/find-player", (www, result) =>
         {
             onFinish(result);
         }, JsonConvert.SerializeObject(dict), loginToken);
@@ -684,9 +684,9 @@ public partial class WebServiceClient : BaseGameService
     #endregion
 
     #region Arena Services
-    protected override void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
-        GetAsDecodedJSON<FriendListResult>("/opponents", (www, result) =>
+        GetAsDecodedJSON<PlayerListResult>("/opponents", (www, result) =>
         {
             onFinish(result);
         }, loginToken);
@@ -823,9 +823,9 @@ public partial class WebServiceClient : BaseGameService
         }, JsonConvert.SerializeObject(dict), loginToken);
     }
 
-    protected override void DoGetClanMemberList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    protected override void DoGetClanMemberList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
-        PostAsDecodedJSON<FriendListResult>("/clan-members", (www, result) =>
+        PostAsDecodedJSON<PlayerListResult>("/clan-members", (www, result) =>
         {
             onFinish(result);
         }, loginToken);
