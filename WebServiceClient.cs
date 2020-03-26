@@ -751,4 +751,110 @@ public partial class WebServiceClient : BaseGameService
         }, JsonConvert.SerializeObject(dict), loginToken);
     }
     #endregion
+
+    #region Clan
+    protected override void DoCreateClan(string playerId, string loginToken, string clanName, UnityAction<CreateClanResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("clanName", clanName);
+        PostAsDecodedJSON<CreateClanResult>("/create-clan", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+
+    protected override void DoFindClan(string playerId, string loginToken, string clanName, UnityAction<ClanListResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("clanName", clanName);
+        PostAsDecodedJSON<ClanListResult>("/find-clan", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+
+    protected override void DoClanJoinRequest(string playerId, string loginToken, string clanId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("clanId", clanId);
+        PostAsDecodedJSON<GameServiceResult>("/clan-join-request", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+
+    protected override void DoClanJoinAccept(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("targetPlayerId", targetPlayerId);
+        PostAsDecodedJSON<GameServiceResult>("/clan-join-accept", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+
+    protected override void DoClanJoinDecline(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("targetPlayerId", targetPlayerId);
+        PostAsDecodedJSON<GameServiceResult>("/clan-join-decline", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+
+    protected override void DoClanMemberDelete(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("targetPlayerId", targetPlayerId);
+        PostAsDecodedJSON<GameServiceResult>("/clan-member-delete", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+
+    protected override void DoClanJoinRequestDelete(string playerId, string loginToken, string clanId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("clanId", clanId);
+        PostAsDecodedJSON<GameServiceResult>("/clan-join-request-delete", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+
+    protected override void DoGetClanMemberList(string playerId, string loginToken, UnityAction<FriendListResult> onFinish)
+    {
+        PostAsDecodedJSON<FriendListResult>("/clan-members", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoClanOwnerTransfer(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("targetPlayerId", targetPlayerId);
+        PostAsDecodedJSON<GameServiceResult>("/clan-owner-transfer", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+
+    protected override void DoClanTerminate(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish)
+    {
+        PostAsDecodedJSON<GameServiceResult>("/clan-terminate", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoGetClan(string playerId, string loginToken, UnityAction<ClanResult> onFinish)
+    {
+        PostAsDecodedJSON<ClanResult>("/clan", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+    #endregion
 }
