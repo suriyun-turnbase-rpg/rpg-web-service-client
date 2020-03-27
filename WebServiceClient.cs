@@ -165,7 +165,9 @@ public partial class WebServiceClient : BaseGameService
             "\"playerMaxLevel\":" + gameDatabase.playerMaxLevel + "," +
             "\"playerExpTable\":" + gameDatabase.playerExpTable.ToJson() + "," +
             "\"revivePrice\":" + gameDatabase.revivePrice + "," +
-            "\"resetItemLevelAfterEvolve\":" + (gameDatabase.resetItemLevelAfterEvolve ? 1 : 0) + "}";
+            "\"resetItemLevelAfterEvolve\":" + (gameDatabase.resetItemLevelAfterEvolve ? 1 : 0) + "," +
+            "\"createClanCurrencyType\":" + (byte)gameDatabase.createClanCurrencyType + "," +
+            "\"createClanCurrencyAmount\":" + gameDatabase.createClanCurrencyAmount + "}";
         
         var path = EditorUtility.SaveFilePanel("Export Game Database", Application.dataPath, "GameData", "json");
         if (path.Length > 0)
@@ -828,7 +830,7 @@ public partial class WebServiceClient : BaseGameService
         PostAsDecodedJSON<PlayerListResult>("/clan-members", (www, result) =>
         {
             onFinish(result);
-        }, loginToken);
+        }, "{}", loginToken);
     }
 
     protected override void DoClanOwnerTransfer(string playerId, string loginToken, string targetPlayerId, UnityAction<GameServiceResult> onFinish)
@@ -846,7 +848,7 @@ public partial class WebServiceClient : BaseGameService
         PostAsDecodedJSON<GameServiceResult>("/clan-terminate", (www, result) =>
         {
             onFinish(result);
-        }, loginToken);
+        }, "{}", loginToken);
     }
 
     protected override void DoGetClan(string playerId, string loginToken, UnityAction<ClanResult> onFinish)
@@ -854,7 +856,7 @@ public partial class WebServiceClient : BaseGameService
         PostAsDecodedJSON<ClanResult>("/clan", (www, result) =>
         {
             onFinish(result);
-        }, loginToken);
+        }, "{}", loginToken);
     }
 
     protected override void DoGetClanJoinRequestList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
@@ -862,7 +864,7 @@ public partial class WebServiceClient : BaseGameService
         PostAsDecodedJSON<PlayerListResult>("/clan-join-requests", (www, result) =>
         {
             onFinish(result);
-        }, loginToken);
+        }, "{}", loginToken);
     }
 
     protected override void DoGetClanJoinPendingRequestList(string playerId, string loginToken, UnityAction<ClanListResult> onFinish)
@@ -870,7 +872,7 @@ public partial class WebServiceClient : BaseGameService
         PostAsDecodedJSON<ClanListResult>("/clan-join-pending-requests", (www, result) =>
         {
             onFinish(result);
-        }, loginToken);
+        }, "{}", loginToken);
     }
 
     protected override void DoClanExit(string playerId, string loginToken, UnityAction<GameServiceResult> onFinish)
@@ -878,7 +880,7 @@ public partial class WebServiceClient : BaseGameService
         PostAsDecodedJSON<GameServiceResult>("/clan-exit", (www, result) =>
         {
             onFinish(result);
-        }, loginToken);
+        }, "{}", loginToken);
     }
     #endregion
 }
