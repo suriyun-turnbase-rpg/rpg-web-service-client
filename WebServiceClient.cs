@@ -882,5 +882,16 @@ public partial class WebServiceClient : BaseGameService
             onFinish(result);
         }, "{}", loginToken);
     }
+
+    protected override void DoClanSetRole(string playerId, string loginToken, string targetPlayerId, byte clanRole, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("targetPlayerId", targetPlayerId);
+        dict.Add("clanRole", clanRole);
+        PostAsDecodedJSON<GameServiceResult>("/clan-set-role", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
     #endregion
 }
