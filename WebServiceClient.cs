@@ -342,6 +342,17 @@ public partial class WebServiceClient : BaseGameService
         }, JsonConvert.SerializeObject(dict), loginToken);
     }
 
+    protected override void DoCraftItem(string playerId, string loginToken, string itemCraftId, Dictionary<string, int> materials, UnityAction<ItemResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("itemCraftId", itemCraftId);
+        dict.Add("materials", materials);
+        PostAsDecodedJSON<ItemResult>("/craft-item", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+
     protected override void DoGetAvailableLootBoxList(UnityAction<AvailableLootBoxListResult> onFinish)
     {
         GetAsDecodedJSON<AvailableLootBoxListResult>("/available-lootboxes", (www, result) =>
