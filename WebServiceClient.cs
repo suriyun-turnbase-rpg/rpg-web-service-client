@@ -769,4 +769,25 @@ public partial class WebServiceClient : BaseGameService
         }, JsonConvert.SerializeObject(dict), loginToken);
     }
     #endregion
+
+    #region Chat
+    protected override void DoGetChatMessages(string playerId, string loginToken, long lastTime, UnityAction<ChatMessageListResult> onFinish)
+    {
+        GetAsDecodedJSON<ChatMessageListResult>("/chat-messages/" + lastTime, (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoEnterChatMessage(string playerId, string loginToken, bool isClanChat, string message, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("isClanChat", isClanChat);
+        dict.Add("message", message);
+        PostAsDecodedJSON<GameServiceResult>("/enter-chat-message", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
+    #endregion
 }
