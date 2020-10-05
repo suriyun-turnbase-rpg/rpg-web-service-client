@@ -32,7 +32,7 @@ public partial class WebServiceClient : BaseGameService
             return;
         }
         gameDatabase.Setup();
-        
+
         var path = EditorUtility.SaveFilePanel("Export Game Database", Application.dataPath, "GameData", "json");
         if (path.Length > 0)
             File.WriteAllText(path, gameDatabase.ToJson());
@@ -558,6 +558,15 @@ public partial class WebServiceClient : BaseGameService
             onFinish(result);
         }, JsonConvert.SerializeObject(dict), loginToken);
     }
+
+    protected override void DoGetAvailableStageList(UnityAction<AvailableStageListResult> onFinish)
+    {
+        GetAsDecodedJSON<AvailableStageListResult>("/available-stages", (www, result) =>
+        {
+            onFinish(result);
+        });
+    }
+
     #endregion
 
     #region Arena Services
