@@ -408,10 +408,10 @@ public partial class WebServiceClient : BaseGameService
         }, JsonConvert.SerializeObject(dict), loginToken);
     }
 
-    protected override void DoRefillStamina(string playerId, string loginToken, string staminaId, UnityAction<RefillStaminaResult> onFinish)
+    protected override void DoRefillStamina(string playerId, string loginToken, string staminaDataId, UnityAction<RefillStaminaResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
-        dict.Add("staminaId", staminaId);
+        dict.Add("staminaId", staminaDataId);
         PostAsDecodedJSON<RefillStaminaResult>("/refill-stamina", (www, result) =>
         {
             onFinish(result);
