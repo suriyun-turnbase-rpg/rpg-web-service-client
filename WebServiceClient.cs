@@ -407,6 +407,16 @@ public partial class WebServiceClient : BaseGameService
             onFinish(result);
         }, JsonConvert.SerializeObject(dict), loginToken);
     }
+
+    protected override void DoRefillStamina(string playerId, string loginToken, string staminaId, UnityAction<RefillStaminaResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("staminaId", staminaId);
+        PostAsDecodedJSON<RefillStaminaResult>("/refill-stamina", (www, result) =>
+        {
+            onFinish(result);
+        }, JsonConvert.SerializeObject(dict), loginToken);
+    }
     #endregion
 
     #region Social Services
