@@ -411,7 +411,7 @@ public partial class WebServiceClient : BaseGameService
     protected override void DoRefillStamina(string playerId, string loginToken, string staminaDataId, UnityAction<RefillStaminaResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
-        dict.Add("staminaId", staminaDataId);
+        dict.Add("staminaDataId", staminaDataId);
         PostAsDecodedJSON<RefillStaminaResult>("/refill-stamina", (www, result) =>
         {
             onFinish(result);
