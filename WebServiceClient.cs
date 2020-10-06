@@ -417,6 +417,14 @@ public partial class WebServiceClient : BaseGameService
             onFinish(result);
         }, JsonConvert.SerializeObject(dict), loginToken);
     }
+
+    protected override void DoGetRefillStaminaInfo(string playerId, string loginToken, string staminaDataId, UnityAction<RefillStaminaInfoResult> onFinish)
+    {
+        GetAsDecodedJSON<RefillStaminaInfoResult>("/refill-stamina-info/" + staminaDataId, (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
     #endregion
 
     #region Social Services
