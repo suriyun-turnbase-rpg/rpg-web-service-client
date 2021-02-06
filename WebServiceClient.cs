@@ -863,12 +863,39 @@ public partial class WebServiceClient : BaseGameService
         }
     }
 
-    protected override void DoEnterChatMessage(string playerId, string loginToken, bool isClanChat, string message, UnityAction<GameServiceResult> onFinish)
+    protected override void DoGetClanChatMessages(string playerId, string loginToken, long lastTime, UnityAction<ChatMessageListResult> onFinish)
+    {
+        if (sendActionTargetViaRequestQuery)
+        {
+            GetAsDecodedJSON<ChatMessageListResult>($"clan-chat-messages&lastTime={lastTime}", (www, result) =>
+            {
+                onFinish(result);
+            }, loginToken);
+        }
+        else
+        {
+            GetAsDecodedJSON<ChatMessageListResult>($"clan-chat-messages/{lastTime}", (www, result) =>
+            {
+                onFinish(result);
+            }, loginToken);
+        }
+    }
+
+    protected override void DoEnterChatMessage(string playerId, string loginToken, string message, UnityAction<GameServiceResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
-        dict.Add("isClanChat", isClanChat);
         dict.Add("message", message);
         PostAsDecodedJSON<GameServiceResult>("enter-chat-message", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoEnterClanChatMessage(string playerId, string loginToken, string message, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("message", message);
+        PostAsDecodedJSON<GameServiceResult>("enter-clan-chat-message", (www, result) =>
         {
             onFinish(result);
         }, dict, loginToken);
