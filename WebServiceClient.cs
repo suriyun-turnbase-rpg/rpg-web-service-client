@@ -844,6 +844,41 @@ public partial class WebServiceClient : BaseGameService
             onFinish(result);
         }, dict, loginToken);
     }
+
+    protected override void DoClanCheckin(string playerId, string loginToken, UnityAction<ClanResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        PostAsDecodedJSON<ClanResult>("clan-checkin", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoGetClanCheckinStatus(string playerId, string loginToken, UnityAction<ClanCheckinStatusResult> onFinish)
+    {
+        GetAsDecodedJSON<ClanCheckinStatusResult>("clan-checkin-status", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoClanDonation(string clanDonationDataId, string playerId, string loginToken, UnityAction<ClanDonationResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("clanDonationDataId", clanDonationDataId);
+        PostAsDecodedJSON<ClanDonationResult>("clan-donation", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoGetClanDonationStatus(string playerId, string loginToken, UnityAction<ClanDonationStatusResult> onFinish)
+    {
+        GetAsDecodedJSON<ClanDonationStatusResult>("clan-donation-status", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
     #endregion
 
     #region Chat
@@ -855,7 +890,9 @@ public partial class WebServiceClient : BaseGameService
             {
                 onFinish(result);
             }, loginToken);
-        } else {
+        }
+        else
+        {
             GetAsDecodedJSON<ChatMessageListResult>($"chat-messages/{lastTime}", (www, result) =>
             {
                 onFinish(result);
