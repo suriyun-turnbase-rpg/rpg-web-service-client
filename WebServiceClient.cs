@@ -580,11 +580,12 @@ public partial class WebServiceClient : BaseGameService
         }, dict, loginToken);
     }
 
-    protected override void DoFinishStage(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishStageResult> onFinish)
+    protected override void DoFinishStage(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishStageResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
         dict.Add("session", session);
         dict.Add("battleResult", battleResult);
+        dict.Add("totalDamage", totalDamage);
         dict.Add("deadCharacters", deadCharacters);
         PostAsDecodedJSON<FinishStageResult>("finish-stage", (www, result) =>
         {
@@ -653,11 +654,12 @@ public partial class WebServiceClient : BaseGameService
         }, dict, loginToken);
     }
 
-    protected override void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int deadCharacters, UnityAction<FinishDuelResult> onFinish)
+    protected override void DoFinishDuel(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishDuelResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
         dict.Add("session", session);
         dict.Add("battleResult", battleResult);
+        dict.Add("totalDamage", totalDamage);
         dict.Add("deadCharacters", deadCharacters);
         PostAsDecodedJSON<FinishDuelResult>("finish-duel", (www, result) =>
         {
