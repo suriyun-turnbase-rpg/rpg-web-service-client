@@ -847,10 +847,10 @@ public partial class WebServiceClient : BaseGameService
         }, dict, loginToken);
     }
 
-    protected override void DoClanCheckin(string playerId, string loginToken, UnityAction<ClanResult> onFinish)
+    protected override void DoClanCheckin(string playerId, string loginToken, UnityAction<ClanCheckinResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
-        PostAsDecodedJSON<ClanResult>("clan-checkin", (www, result) =>
+        PostAsDecodedJSON<ClanCheckinResult>("clan-checkin", (www, result) =>
         {
             onFinish(result);
         }, dict, loginToken);
