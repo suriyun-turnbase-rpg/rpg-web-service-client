@@ -28,17 +28,11 @@ public partial class WebServiceClient : BaseGameService
             Debug.LogError("Cannot export game database, no game instance found");
             return;
         }
-        var gameDatabase = gameInstance.gameDatabase;
-        if (gameDatabase == null)
-        {
-            Debug.LogError("Cannot export game database, no game database found");
-            return;
-        }
-        gameDatabase.Setup();
+        gameInstance.SetupGameDatabase();
 
         var path = EditorUtility.SaveFilePanel("Export Game Database", Application.dataPath, "GameData", "json");
         if (path.Length > 0)
-            File.WriteAllText(path, gameDatabase.ToJson());
+            File.WriteAllText(path, GameInstance.GameDatabase.ToJson());
     }
 #endif
 
