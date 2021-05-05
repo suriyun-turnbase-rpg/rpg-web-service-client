@@ -636,7 +636,7 @@ public partial class WebServiceClient : BaseGameService
     #endregion
 
     #region Arena Services
-    protected override void DoArenaGetOpponentList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
+    protected override void DoGetArenaOpponentList(string playerId, string loginToken, UnityAction<PlayerListResult> onFinish)
     {
         GetAsDecodedJSON<PlayerListResult>("opponents", (www, result) =>
         {
@@ -935,6 +935,39 @@ public partial class WebServiceClient : BaseGameService
         var dict = new Dictionary<string, object>();
         dict.Add("message", message);
         PostAsDecodedJSON<GameServiceResult>("enter-clan-chat-message", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+    #endregion
+
+    #region Raid Event
+    protected override void DoGetRaidEventList(string playerId, string loginToken, UnityAction<RaidEventListResult> onFinish)
+    {
+        GetAsDecodedJSON<RaidEventListResult>("raid-events", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoStartRaidBossBattle(string playerId, string loginToken, string eventId, UnityAction<StartRaidBossBattleResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("eventId", eventId);
+        PostAsDecodedJSON<StartRaidBossBattleResult>("start-raid-boss-battle", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoFinishRaidBossBattle(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishRaidBossBattleResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("session", session);
+        dict.Add("battleResult", battleResult);
+        dict.Add("totalDamage", totalDamage);
+        dict.Add("deadCharacters", deadCharacters);
+        PostAsDecodedJSON<FinishRaidBossBattleResult>("finish-raid-boss-battle", (www, result) =>
         {
             onFinish(result);
         }, dict, loginToken);
