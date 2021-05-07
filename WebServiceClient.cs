@@ -967,4 +967,44 @@ public partial class WebServiceClient : BaseGameService
         }, dict, loginToken);
     }
     #endregion
+
+    #region Mail
+    protected override void DoGetMailList(string playerId, string loginToken, UnityAction<MailListResult> onFinish)
+    {
+        GetAsDecodedJSON<MailListResult>("mails", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoReadMail(string playerId, string loginToken, string id, UnityAction<ReadMailResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("id", id);
+        PostAsDecodedJSON<ReadMailResult>("read-mail", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoClaimMailRewards(string playerId, string loginToken, string id, UnityAction<ItemResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("id", id);
+        PostAsDecodedJSON<ItemResult>("claim-mail-rewards", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoDeleteMail(string playerId, string loginToken, string id, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("id", id);
+        PostAsDecodedJSON<GameServiceResult>("delete-mail", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+    #endregion
 }
