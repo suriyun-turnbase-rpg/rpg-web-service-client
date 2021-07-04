@@ -1007,4 +1007,37 @@ public partial class WebServiceClient : BaseGameService
         }, dict, loginToken);
     }
     #endregion
+
+    #region Clan Event
+    protected override void DoGetClanEventList(string playerId, string loginToken, UnityAction<ClanEventListResult> onFinish)
+    {
+        GetAsDecodedJSON<ClanEventListResult>("clan-events", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoStartClanBossBattle(string playerId, string loginToken, string eventId, UnityAction<StartClanBossBattleResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("eventId", eventId);
+        PostAsDecodedJSON<StartClanBossBattleResult>("start-clan-boss-battle", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoFinishClanBossBattle(string playerId, string loginToken, string session, EBattleResult battleResult, int totalDamage, int deadCharacters, UnityAction<FinishClanBossBattleResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("session", session);
+        dict.Add("battleResult", battleResult);
+        dict.Add("totalDamage", totalDamage);
+        dict.Add("deadCharacters", deadCharacters);
+        PostAsDecodedJSON<FinishClanBossBattleResult>("finish-clan-boss-battle", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+    #endregion
 }
