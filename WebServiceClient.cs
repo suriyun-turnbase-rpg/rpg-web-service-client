@@ -1048,4 +1048,45 @@ public partial class WebServiceClient : BaseGameService
         }, dict, loginToken);
     }
     #endregion
+
+    #region Random Store Event
+    protected override void DoGetRandomStore(string playerId, string loginToken, string id, UnityAction<RandomStoreResult> onFinish)
+    {
+        if (sendActionTargetViaRequestQuery)
+        {
+            GetAsDecodedJSON<RandomStoreResult>($"random-store&id={id}", (www, result) =>
+            {
+                onFinish(result);
+            }, loginToken);
+        }
+        else
+        {
+            GetAsDecodedJSON<RandomStoreResult>($"random-store/{id}", (www, result) =>
+            {
+                onFinish(result);
+            }, loginToken);
+        }
+    }
+
+    protected override void DoPurchaseRandomStoreItem(string playerId, string loginToken, string id, int index, UnityAction<PurchaseRandomStoreItemResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("id", id);
+        dict.Add("index", index);
+        PostAsDecodedJSON<PurchaseRandomStoreItemResult>("purchase-random-store-item", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoRefreshRandomStore(string playerId, string loginToken, string id, UnityAction<RandomStoreResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("id", id);
+        PostAsDecodedJSON<RandomStoreResult>("refresh-random-store", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+    #endregion
 }
