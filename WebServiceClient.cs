@@ -1006,6 +1006,14 @@ public partial class WebServiceClient : BaseGameService
             onFinish(result);
         }, dict, loginToken);
     }
+
+    protected override void DoGetMailsCount(string playerId, string loginToken, UnityAction<MailsCountResult> onFinish)
+    {
+        GetAsDecodedJSON<MailsCountResult>("mails-count", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
     #endregion
 
     #region Clan Event
