@@ -1079,11 +1079,11 @@ public partial class WebServiceClient : BaseGameService
         }, dict, loginToken);
     }
 
-    protected override void DoRefreshRandomStore(string playerId, string loginToken, string id, UnityAction<RandomStoreResult> onFinish)
+    protected override void DoRefreshRandomStore(string playerId, string loginToken, string id, UnityAction<RefreshRandomStoreResult> onFinish)
     {
         var dict = new Dictionary<string, object>();
         dict.Add("id", id);
-        PostAsDecodedJSON<RandomStoreResult>("refresh-random-store", (www, result) =>
+        PostAsDecodedJSON<RefreshRandomStoreResult>("refresh-random-store", (www, result) =>
         {
             onFinish(result);
         }, dict, loginToken);
