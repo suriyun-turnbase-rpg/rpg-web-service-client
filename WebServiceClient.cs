@@ -1089,4 +1089,40 @@ public partial class WebServiceClient : BaseGameService
         }, dict, loginToken);
     }
     #endregion
+
+    protected override void DoGetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish)
+    {
+        if (sendActionTargetViaRequestQuery)
+        {
+            GetAsDecodedJSON<FormationCharactersAndEquipmentsResult>($"formation-characters-and-equipments&playerId={playerId}&formationDataId={formationDataId}", (www, result) =>
+            {
+                onFinish(result);
+            });
+        }
+        else
+        {
+            GetAsDecodedJSON<FormationCharactersAndEquipmentsResult>($"formation-characters-and-equipments/{playerId}/{formationDataId}", (www, result) =>
+            {
+                onFinish(result);
+            });
+        }
+    }
+
+    protected override void DoGetArenaFormationCharactersAndEquipments(string playerId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish)
+    {
+        if (sendActionTargetViaRequestQuery)
+        {
+            GetAsDecodedJSON<FormationCharactersAndEquipmentsResult>($"arena-formation-characters-and-equipments&playerId={playerId}", (www, result) =>
+            {
+                onFinish(result);
+            });
+        }
+        else
+        {
+            GetAsDecodedJSON<FormationCharactersAndEquipmentsResult>($"arena-formation-characters-and-equipments/{playerId}", (www, result) =>
+            {
+                onFinish(result);
+            });
+        }
+    }
 }
