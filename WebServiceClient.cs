@@ -46,9 +46,9 @@ public partial class WebServiceClient : BaseGameService
         StartCoroutine(GetRoutine(action, (www) =>
         {
             T result = new T();
-            if (www.isHttpError)
+            if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.DataProcessingError)
                 result.error = GameServiceErrorCode.UNKNOW;
-            else if (www.isNetworkError)
+            else if (www.result == UnityWebRequest.Result.ConnectionError)
                 result.error = GameServiceErrorCode.NETWORK;
             else
                 result = JsonConvert.DeserializeObject<T>(www.downloadHandler.text);
@@ -96,7 +96,7 @@ public partial class WebServiceClient : BaseGameService
 
         yield return www.SendWebRequest();
 
-        if (www.isNetworkError || www.isHttpError)
+        if (www.result != UnityWebRequest.Result.Success)
             Debug.LogError("[GET->Error] " + path + " " + www.error + " " + www.downloadHandler.text);
 
         if (debug)
@@ -117,9 +117,9 @@ public partial class WebServiceClient : BaseGameService
         StartCoroutine(PostRoutine(action, (www) =>
         {
             T result = new T();
-            if (www.isHttpError)
+            if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.DataProcessingError)
                 result.error = GameServiceErrorCode.UNKNOW;
-            else if (www.isNetworkError)
+            else if (www.result == UnityWebRequest.Result.ConnectionError)
                 result.error = GameServiceErrorCode.NETWORK;
             else
                 result = JsonConvert.DeserializeObject<T>(www.downloadHandler.text);
@@ -170,7 +170,7 @@ public partial class WebServiceClient : BaseGameService
 
         yield return www.SendWebRequest();
 
-        if (www.isNetworkError || www.isHttpError)
+        if (www.result != UnityWebRequest.Result.Success)
             Debug.LogError("[POST->Error] " + path + " " + www.error + " " + www.downloadHandler.text);
 
         if (debug)
@@ -1084,6 +1084,36 @@ public partial class WebServiceClient : BaseGameService
         var dict = new Dictionary<string, object>();
         dict.Add("id", id);
         PostAsDecodedJSON<RefreshRandomStoreResult>("refresh-random-store", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+    #endregion
+
+    #region Daily Reward
+    protected override void DoGetDailyRewardList(string playerId, string loginToken, string id, UnityAction<DailyRewardListResult> onFinish)
+    {
+        if (sendActionTargetViaRequestQuery)
+        {
+            GetAsDecodedJSON<DailyRewardListResult>($"daily-rewarding&id={id}", (www, result) =>
+            {
+                onFinish(result);
+            }, loginToken);
+        }
+        else
+        {
+            GetAsDecodedJSON<DailyRewardListResult>($"daily-rewarding/{id}", (www, result) =>
+            {
+                onFinish(result);
+            }, loginToken);
+        }
+    }
+
+    protected override void DoClaimDailyReward(string playerId, string loginToken, string id, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("id", id);
+        PostAsDecodedJSON<RefreshRandomStoreResult>("daily-rewarding-claim", (www, result) =>
         {
             onFinish(result);
         }, dict, loginToken);
