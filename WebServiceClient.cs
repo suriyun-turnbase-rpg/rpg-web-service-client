@@ -1093,20 +1093,10 @@ public partial class WebServiceClient : BaseGameService
     #region Daily Reward
     protected override void DoGetAllDailyRewardList(string playerId, string loginToken, UnityAction<AllDailyRewardListResult> onFinish)
     {
-        if (sendActionTargetViaRequestQuery)
+        GetAsDecodedJSON<AllDailyRewardListResult>($"all-daily-rewarding", (www, result) =>
         {
-            GetAsDecodedJSON<AllDailyRewardListResult>($"all-daily-rewarding", (www, result) =>
-            {
-                onFinish(result);
-            }, loginToken);
-        }
-        else
-        {
-            GetAsDecodedJSON<AllDailyRewardListResult>($"all-daily-rewarding", (www, result) =>
-            {
-                onFinish(result);
-            }, loginToken);
-        }
+            onFinish(result);
+        }, loginToken);
     }
 
     protected override void DoGetDailyRewardList(string playerId, string loginToken, string id, UnityAction<DailyRewardListResult> onFinish)
