@@ -1176,6 +1176,66 @@ public partial class WebServiceClient : BaseGameService
             onFinish(result);
         }, loginToken);
     }
+
+    protected override void DoSetPlayerIcon(string playerId, string loginToken, string iconDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("iconDataId", iconDataId);
+        PostAsDecodedJSON<GameServiceResult>("set-icon", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoSetPlayerFrame(string playerId, string loginToken, string frameDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("frameDataId", frameDataId);
+        PostAsDecodedJSON<GameServiceResult>("set-frame", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoSetPlayerTitle(string playerId, string loginToken, string titleDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("titleDataId", titleDataId);
+        PostAsDecodedJSON<GameServiceResult>("set-title", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoSetClanIcon(string playerId, string loginToken, string iconDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("iconDataId", iconDataId);
+        PostAsDecodedJSON<GameServiceResult>("set-clan-icon", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoSetClanFrame(string playerId, string loginToken, string frameDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("frameDataId", frameDataId);
+        PostAsDecodedJSON<GameServiceResult>("set-clan-frame", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+
+    protected override void DoSetClanTitle(string playerId, string loginToken, string titleDataId, UnityAction<GameServiceResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("titleDataId", titleDataId);
+        PostAsDecodedJSON<GameServiceResult>("set-clan-title", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
     #endregion
 
     protected override void DoGetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish)
