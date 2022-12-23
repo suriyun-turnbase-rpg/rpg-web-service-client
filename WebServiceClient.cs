@@ -1128,6 +1128,56 @@ public partial class WebServiceClient : BaseGameService
     }
     #endregion
 
+    #region Profile
+    protected override void DoGetUnlockIconList(string playerId, string loginToken, UnityAction<UnlockIconListResult> onFinish)
+    {
+        GetAsDecodedJSON<UnlockIconListResult>("unlock-icons", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoGetUnlockFrameList(string playerId, string loginToken, UnityAction<UnlockFrameListResult> onFinish)
+    {
+        GetAsDecodedJSON<UnlockFrameListResult>("unlock-frames", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoGetUnlockTitleList(string playerId, string loginToken, UnityAction<UnlockTitleListResult> onFinish)
+    {
+        GetAsDecodedJSON<UnlockTitleListResult>("unlock-titles", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoGetClanUnlockIconList(string playerId, string loginToken, UnityAction<ClanUnlockIconListResult> onFinish)
+    {
+        GetAsDecodedJSON<ClanUnlockIconListResult>("clan-unlock-icons", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoGetClanUnlockFrameList(string playerId, string loginToken, UnityAction<ClanUnlockFrameListResult> onFinish)
+    {
+        GetAsDecodedJSON<ClanUnlockFrameListResult>("clan-unlock-frames", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+
+    protected override void DoGetClanUnlockTitleList(string playerId, string loginToken, UnityAction<ClanUnlockTitleListResult> onFinish)
+    {
+        GetAsDecodedJSON<ClanUnlockTitleListResult>("clan-unlock-titles", (www, result) =>
+        {
+            onFinish(result);
+        }, loginToken);
+    }
+    #endregion
+
     protected override void DoGetFormationCharactersAndEquipments(string playerId, string formationDataId, UnityAction<FormationCharactersAndEquipmentsResult> onFinish)
     {
         if (sendActionTargetViaRequestQuery)
