@@ -1128,6 +1128,26 @@ public partial class WebServiceClient : BaseGameService
     }
     #endregion
 
+    #region Fortune Wheel
+    protected override void DoGetAvailableFortuneWheelList(UnityAction<AvailableFortuneWheelListResult> onFinish)
+    {
+        GetAsDecodedJSON<AvailableFortuneWheelListResult>("available-fortune-wheels", (www, result) =>
+        {
+            onFinish(result);
+        });
+    }
+
+    protected override void DoSpinFortuneWheel(string playerId, string loginToken, string fortuneWheelDataId, UnityAction<SpinFortuneWheelResult> onFinish)
+    {
+        var dict = new Dictionary<string, object>();
+        dict.Add("fortuneWheelDataId", fortuneWheelDataId);
+        PostAsDecodedJSON<SpinFortuneWheelResult>("spin-fortune-wheel", (www, result) =>
+        {
+            onFinish(result);
+        }, dict, loginToken);
+    }
+    #endregion
+
     #region Profile
     protected override void DoGetUnlockIconList(string playerId, string loginToken, UnityAction<UnlockIconListResult> onFinish)
     {
