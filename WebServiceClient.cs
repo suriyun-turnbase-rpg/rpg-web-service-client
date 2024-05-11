@@ -155,7 +155,7 @@ public partial class WebServiceClient : BaseGameService
         }
 
         var jsonData = JsonConvert.SerializeObject(data);
-        UnityWebRequest www = UnityWebRequest.Post($"{serviceUrl}/{path}", jsonData);
+        UnityWebRequest www = UnityWebRequest.PostWwwForm($"{serviceUrl}/{path}", jsonData);
 
         if (!sendLoginTokenViaRequestQuery && !string.IsNullOrEmpty(loginToken))
         {
